@@ -1,5 +1,32 @@
-* {
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+@import "tailwindcss";
+
+html,
+body {
+  height: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+}
+
+:root {
+  --color-main: #6cd99b;
+  --color-secondary: #65bf8c;
+  --color-highlight: #7abf98;
+}
+
+.bg-main {
+  background-color: var(--color-main);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-heightlight {
+  background-color: var(--color-highlight);
 }
