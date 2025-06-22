@@ -15,3 +15,21 @@ export const formatarData = (data) => {
     return "Erro de formatação";
   }
 };
+
+export const formatCurrency = (value) => {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(value);
+}
+
+export const translateCategories = (category) => {
+  const translation = {
+    ELECTRONIC: "Eletrônicos",
+    APPLIANCE: "Eletrodomésticos",
+    FURNITURE: "Móveis",
+    CLEANING: "Limpeza"
+  };
+
+  return translation[category] || category;
+}

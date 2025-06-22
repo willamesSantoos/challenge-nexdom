@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -53,5 +52,10 @@ public class StockMovementService {
             log.error("Erro ao buscar dados do gráfico: {}", ex.getMessage(), ex);
             throw new RuntimeException("Erro inesperado ao buscar dados do gráfico", ex);
         }
+    }
+
+
+    public boolean existsByProductId(Long productId) {
+        return stockMovementRepository.existsByProductId(productId);
     }
 }

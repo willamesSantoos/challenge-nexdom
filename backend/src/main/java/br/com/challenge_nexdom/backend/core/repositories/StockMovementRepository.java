@@ -61,4 +61,5 @@ public interface StockMovementRepository extends JpaRepository<StockMovement, Lo
             @Param("endDate") LocalDateTime endDate
     );
 
+    boolean existsByProductId(Long productId);
 }
