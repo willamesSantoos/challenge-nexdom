@@ -5,11 +5,12 @@
   >
     <div class="pt-20 flex-1 flex flex-col">
       <nav class="flex-1 px-3 py-4 overflow-y-auto">
-        <ul class="space-y-2">  
-          <SessionSideBar
-            v-for="session in ['Dashboard', 'Produtos', 'Movimentações']"
-            :key="session"
-            :session="session"
+        <ul class="space-y-2">
+          <SidebarSession
+            v-for="{ title, path } in links"
+            :key="path"
+            :title="title"
+            :path="path"
           />
         </ul>
       </nav>
@@ -24,5 +25,11 @@
 </template>
 
 <script setup>
-import SessionSideBar from "./SessionSideBar.vue";
+import SidebarSession from "./SidebarSession.vue";
+
+const links = [
+  { title: "Dashboard", path: "/" },
+  { title: "Produtos", path: "/products" },
+  { title: "Movimentações", path: "/movements" },
+];
 </script>

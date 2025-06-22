@@ -30,3 +30,7 @@ body {
 .bg-heightlight {
   background-color: var(--color-highlight);
 }
+
+.text-main {
+  color: var(--color-main);
+}

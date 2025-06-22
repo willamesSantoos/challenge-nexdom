@@ -1,6 +1,6 @@
 <template>
     <nav
-      class="bg-white shadow-md px-6 py-1 flex items-center justify-between rounded-b-3xl fixed w-full z-35"
+      class="bg-white shadow-md px-6 py-1 flex items-center justify-between rounded-b-2xl fixed w-full z-35"
     >
       <img class="h-10 cursor-pointer" src="../assets/images/logo.png" alt="" />
   
