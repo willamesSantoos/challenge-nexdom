@@ -1,4 +1,4 @@
-export const formatarData = (data) => {
+export const formatDate = (data) => {
   try {
     if (!data) return "";
 
@@ -32,4 +32,13 @@ export const translateCategories = (category) => {
   };
 
   return translation[category] || category;
+}
+
+export const translateMovementType = (Type) => {
+  const translation = {
+    IN: "Entrada",
+    OUT: "Saída"
+  };
+
+  return translation[Type] || Type;
 }

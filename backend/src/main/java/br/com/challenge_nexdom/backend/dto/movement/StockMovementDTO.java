@@ -1,6 +1,7 @@
-package br.com.challenge_nexdom.backend.dto;
+package br.com.challenge_nexdom.backend.dto.movement;
 
 import br.com.challenge_nexdom.backend.core.models.movement.StockMovement;
+import br.com.challenge_nexdom.backend.dto.product.ProductDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

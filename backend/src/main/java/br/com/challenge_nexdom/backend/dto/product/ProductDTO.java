@@ -1,4 +1,4 @@
-package br.com.challenge_nexdom.backend.dto;
+package br.com.challenge_nexdom.backend.dto.product;
 
 import br.com.challenge_nexdom.backend.core.models.product.Product;
 

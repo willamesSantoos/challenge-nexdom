@@ -2,104 +2,17 @@
   <div class="p-6 overflow-auto">
     <div class="flex justify-between items-center mb-6">
       <HeaderSession
-        title="Produtos"
-        description="Gerencie seu catálogo de produtos"
+        title="Movimentação de Estoque"
+        description="Controle as movimentações de entrada e saída dos produtos"
       />
       <div class="flex justify-end mt-4 pt-4">
         <button
           class="cursor-pointer h-10 px-4 py-2 bg-main text-white rounded-lg transition-colors flex items-center justify-center gap-2"
           @click="openModalCreate()"
         >
-          <i class="fas fa-file-invoice"></i>
-          <span>Cadastrar Produto</span>
+          <i class="fas fa-plus"></i>
+          <span>Nova Movimentação</span>
         </button>
-      </div>
-    </div>
-
-    <div
-      class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-6"
-    >
-      <div class="p-5">
-        <h2 class="text-lg font-medium text-gray-800 dark:text-white mb-4">
-          Filtrar produtos
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-          <div class="md:col-span-4">
-            <label
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >Descrição</label
-            >
-            <div class="relative">
-              <input
-                v-model="filters.description"
-                type="text"
-                placeholder="Buscar por descrição"
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-              />
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <i class="fas fa-search text-gray-400"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="md:col-span-3">
-            <label
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >Categoria</label
-            >
-            <div class="relative">
-              <select
-                v-model="filters.category"
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white appearance-none"
-              >
-                <option value="">Todas</option>
-                <option
-                  v-for="category in categories"
-                  :key="category"
-                  :value="category"
-                >
-                  {{ translateCategories(category) }}
-                </option>
-              </select>
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <i class="fas fa-tag text-gray-400"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="md:col-span-2">
-            <label
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >Estoque Min.</label
-            >
-
-            <input
-              v-model="filters.stockQuantity"
-              type="number"
-              min="0"
-              step="1"
-              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-            />
-          </div>
-        </div>
-
-        <div
-          class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700"
-        >
-          <button
-            @click="applyFilters()"
-            type="button"
-            class="px-4 py-2 text-sm font-medium text-white bg-main rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
-          >
-            <i class="fas fa-filter"></i>
-            Aplicar Filtros
-          </button>
-        </div>
       </div>
     </div>
 
@@ -111,11 +24,11 @@
       >
         <div class="mb-3 md:mb-0">
           <h3 class="text-lg font-medium text-gray-800 dark:text-white">
-            Produtos cadastrados
+            Movimentações registradas
           </h3>
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            Exibindo {{ productsPageable.numberOfElements }} de
-            {{ productsPageable.totalElements }} produtos
+            Exibindo {{ movementsPageable.numberOfElements }} de
+            {{ movementsPageable.totalElements }} movimentações
           </p>
         </div>
 
@@ -147,7 +60,7 @@
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
               >
-                Código
+                Data
               </th>
               <th
                 scope="col"
@@ -159,19 +72,31 @@
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
               >
-                Categoria
+                Código
               </th>
               <th
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
               >
-                Preço
+                Tipo
               </th>
               <th
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
               >
-                Estoque
+                Quantidade
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Preço Unitário
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+              >
+                Valor Total
               </th>
               <th
                 scope="col"
@@ -185,51 +110,69 @@
             class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
           >
             <tr
-              v-for="product in productsPageable.content"
-              :key="product.id"
+              v-for="movement in movementsPageable.content"
+              :key="movement.id"
               class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"
               >
-                {{ product.code }}
+                {{ formatDate(movement.movementDate) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm font-medium text-gray-900 dark:text-white">
-                  {{ product.description }}
+                  {{ movement.product.description }}
                 </div>
               </td>
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"
               >
-                {{ translateCategories(product.productType) }}
+                {{ movement.product.code }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
+                  :class="`px-2 py-1 text-xs rounded-full ${
+                    movement.movementType === 'IN'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-blue-100 text-blue-800'
+                  }`"
+                >
+                  {{ movement.movementType === "IN" ? "Entrada" : "Saída" }}
+                </span>
               </td>
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"
               >
-                {{ formatCurrency(product.supplierPrice) }}
+                {{ movement.quantity }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900 dark:text-white">
-                  {{ product.stockQuantity }}
-                </div>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"
+              >
+                {{ formatCurrency(movement.salePrice) }}
+              </td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"
+              >
+                {{ formatCurrency(movement.salePrice * movement.quantity) }}
               </td>
               <td
                 class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
               >
                 <div class="flex justify-end gap-2">
-                  <BtnEdit @click="openModalEdit(product.id)" />
-                  <BtnDelete @click="confirmDelete(product.id)" />
+                  <BtnEdit @click="openModalEdit(movement.id)" />
+                  <BtnDelete @click="confirmDelete(movement.id)" />
                 </div>
               </td>
             </tr>
-            <tr v-if="productsPageable.totalElements === 0">
-              <td colspan="7" class="px-6 py-12 text-center">
+            <tr v-if="movementsPageable.totalElements === 0">
+              <td colspan="8" class="px-6 py-12 text-center">
                 <div
                   class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500"
                 >
                   <i class="fas fa-box-open text-4xl mb-3"></i>
-                  <p class="text-lg font-medium">Nenhum produto encontrado</p>
+                  <p class="text-lg font-medium">
+                    Nenhuma movimentação encontrada
+                  </p>
                   <p class="text-sm">Tente ajustar os filtros de busca</p>
                 </div>
               </td>
@@ -257,7 +200,10 @@
                 <i class="fas fa-chevron-left"></i>
               </button>
 
-              <template v-for="page in productsPageable.totalPages" :key="page">
+              <template
+                v-for="page in movementsPageable.totalPages"
+                :key="page"
+              >
                 <button
                   @click="currentPage = page"
                   :class="{
@@ -272,10 +218,10 @@
 
               <button
                 @click="nextPage"
-                :disabled="currentPage === productsPageable.totalPages"
+                :disabled="currentPage === movementsPageable.totalPages"
                 :class="{
                   'opacity-50 cursor-not-allowed':
-                    currentPage === productsPageable.totalPages,
+                    currentPage === movementsPageable.totalPages,
                 }"
                 class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
@@ -289,13 +235,13 @@
     </div>
 
     <div v-if="showModal" class="modal">
-      <ProductModal
+      <MovementModal
         v-model="showModal"
         @submit="handleSubmit"
         @close="showModal = false"
         :showModal="showModal"
-        :categories="categories"
-        :formData="formData"
+        :products="products.content"
+        v-model:formData="formData"
       />
     </div>
   </div>
@@ -303,62 +249,73 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import { formatCurrency, translateCategories } from "../utils/utils.js";
 import {
-  loadProducts,
-  deleteProduct,
-  loadCategories,
-  loadProduct,
-  newProduct,
-  editProduct,
-} from "../services/productsService.js";
+  formatCurrency,
+  formatDate,
+  translateMovementType,
+} from "../utils/utils.js";
+import {
+  loadMovements,
+  deleteMovement,
+  loadMovement,
+  newMovement,
+  editMovement,
+} from "../services/movementsService.js";
+import { loadProducts } from "../services/productsService.js";
 import HeaderSession from "../components/HeaderSession.vue";
 import BtnDelete from "../components/BtnDelete.vue";
 import BtnEdit from "../components/BtnEdit.vue";
-import ProductModal from "../components/ProductModal.vue";
+import MovementModal from "../components/MovementModal.vue";
+import axios from 'axios';
 
 const defaultData = {
-  id: 0,
-  code: "",
-  description: "",
-  productType: "",
-  supplierPrice: 0,
-  stockQuantity: 0,
+  productId: 0,
+  movementType: "",
+  salePrice: null,
+  movementDate: "",
+  quantity: null,
 };
 
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
-const productsPageable = ref({});
-const categories = ref([]);
+const movementsPageable = ref({});
+const products = ref([]);
 const showModal = ref(false);
 const formData = ref(defaultData);
-
 const filters = ref({
-  description: "",
-  category: "",
-  stockQuantity: 0
+  productName: "",
+  movementType: "",
+  startDate: "",
+  endDate: "",
 });
-
-async function applyFilters() {
-  productsPageable.value = await loadProducts(0, itemsPerPage.value, filters.value);
-}
 
 async function handleSubmit() {
   try {
-    const productData = (({ id, ...rest }) => rest)(formData.value);
+    const movementData = (({ id, ...rest }) => rest)(formData.value);
 
     if (formData.value.id) {
-      await editProduct(formData.value.id, productData);
-      showSuccessMessage("Produto atualizado com sucesso!");
+      await editMovement(formData.value.id, movementData);
+      showSuccessMessage("Movimentação atualizada com sucesso!");
     } else {
-      await newProduct(productData);
-      showSuccessMessage("Produto cadastrado com sucesso!");
+      await newMovement(movementData);
+      showSuccessMessage("Movimentação cadastrada com sucesso!");
     }
 
     showModal.value = false;
-    await refreshProducts();
+    await refreshMovements();
   } catch (error) {
-    handleSubmissionError(error);
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data;
+
+        if (status === 422) {
+          alert(message);
+        } else {
+          handleSubmissionError("Erro ao excluir o produto!");
+        }
+      }
+    }
   }
 }
 
@@ -371,8 +328,8 @@ function handleSubmissionError(error) {
   alert("Erro: Ocorreu um erro inesperado. Tente novamente.");
 }
 
-async function refreshProducts() {
-  productsPageable.value = await loadProducts(
+async function refreshMovements() {
+  movementsPageable.value = await loadMovements(
     currentPage.value - 1,
     itemsPerPage.value
   );
@@ -384,32 +341,62 @@ function openModalCreate() {
 }
 
 async function openModalEdit(id) {
-  formData.value = await loadProduct(id);
+  const fullMovement = await loadMovement(id);
+
+  formData.value = {
+    id: fullMovement.id,
+    productId: fullMovement.product.id,
+    movementType: fullMovement.movementType,
+    salePrice: fullMovement.salePrice,
+    movementDate: fullMovement.movementDate,
+    quantity: fullMovement.quantity,
+  };
+
   showModal.value = true;
 }
 
 async function confirmDelete(id) {
   if (
     confirm(
-      "Você tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita."
+      "Você tem certeza que deseja excluir esta movimentação? Esta ação não pode ser desfeita."
     )
   ) {
-    await deleteProduct(id);
-    refreshProducts();
+    await deleteMovement(id);
+    refreshMovements();
   }
 }
 
-watch([currentPage, itemsPerPage], async (newData) => {
-  if (newData) {
-    let [page, items] = newData;
+function applyFilters() {
+  currentPage.value = 1;
+  refreshMovements();
+}
 
-    productsPageable.value = await loadProducts(--page, items);
+function resetFilters() {
+  filters.value = {
+    productName: "",
+    movementType: "",
+    startDate: "",
+    endDate: "",
+  };
+
+  applyFilters();
+}
+
+
+watch(itemsPerPage, async (newData) => {
+  if (newData) {
+    movementsPageable.value = await loadMovements(0, newData, filters.value);
+  }
+});
+
+watch(currentPage, async (newData) => {
+  if (newData) {
+    movementsPageable.value = await loadMovements(--newData, itemsPerPage.value, filters.value);
   }
 });
 
 onMounted(async () => {
-  refreshProducts();
-
-  categories.value = await loadCategories();
+  refreshMovements();
+  products.value = await loadProducts(0, 10000);
 });
 </script>

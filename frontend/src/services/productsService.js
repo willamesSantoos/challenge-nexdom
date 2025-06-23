@@ -1,15 +1,35 @@
 import api from "../http/axios.config.js";
-import axios from 'axios';
+import axios from "axios";
 
 export const loadCategories = async () => {
   const response = await api.get("/products/types");
   return response.data;
 };
 
-export const loadProducts = async (page, size) => {
-  const response = await api.get(`/products?page=${page}&size=${size}`);
+export const loadProducts = async (page, size, filters = {}) => {
+  const params = new URLSearchParams();
+
+  params.set("page", page);
+  params.set("size", size);
+
+  const { description, category, stockQuantity } = filters;
+
+  if (description?.trim()) {
+    params.set("description", description.trim());
+  }
+
+  if (category?.trim()) {
+    params.set("productType", category.trim());
+  }
+
+  if (stockQuantity !== null && stockQuantity !== undefined && stockQuantity > 0) {
+    params.set("stockQuantity", stockQuantity);
+  }
+
+  const response = await api.get(`/products?${params.toString()}`);
   return response.data;
 };
+
 
 export const loadProduct = async (id) => {
   const response = await api.get(`/products/${id}`);

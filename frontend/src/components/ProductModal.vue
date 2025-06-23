@@ -114,27 +114,6 @@
               </p>
             </div>
 
-            <div class="mb-6">
-              <label
-                for="stockQuantity"
-                class="mb-2 block text-sm font-medium text-gray-900"
-                >Quantidade em Estoque
-                <span class="text-red-500">*</span></label
-              >
-              <input
-                type="number"
-                id="stockQuantity"
-                v-model="formData.stockQuantity"
-                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="0"
-                min="0"
-                required
-              />
-              <p v-if="errors.stockQuantity" class="mt-1 text-sm text-red-600">
-                {{ errors.stockQuantity }}
-              </p>
-            </div>
-
             <div class="flex items-center justify-end space-x-3 pt-2">
               <button
                 @click="closeModal"

@@ -1,10 +1,10 @@
-package br.com.challenge_nexdom.backend.dto;
+package br.com.challenge_nexdom.backend.dto.product;
 
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
-public record ProductResponse(
+public record ProductRequest(
         @NotBlank(message = "O código do produto é obrigatório.")
         String code,
 
@@ -22,5 +22,4 @@ public record ProductResponse(
         @NotNull(message = "A quantidade em estoque é obrigatória.")
         @Min(value = 0, message = "A quantidade em estoque não pode ser negativa.")
         Integer stockQuantity
-
 ) { }

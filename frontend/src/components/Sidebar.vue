@@ -31,5 +31,6 @@ const links = [
   { title: "Dashboard", path: "/" },
   { title: "Produtos", path: "/products" },
   { title: "Movimentações", path: "/movements" },
+  { title: "Relatório de lucro", path: "/profit-by-product" },
 ];
 </script>

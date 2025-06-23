@@ -1,6 +1,7 @@
 package br.com.challenge_nexdom.backend.core.repositories;
 
 import br.com.challenge_nexdom.backend.core.models.movement.StockMovement;
+import br.com.challenge_nexdom.backend.dto.product.ProductProfitDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -62,4 +63,19 @@ public interface StockMovementRepository extends JpaRepository<StockMovement, Lo
     );
 
     boolean existsByProductId(Long productId);
+
+    @Query("""
+        SELECT new br.com.challenge_nexdom.backend.dto.product.ProductProfitDTO(
+            m.product.description,
+            SUM(m.quantity),
+            SUM(m.salePrice * m.quantity),
+            SUM(m.product.supplierPrice * m.quantity),
+            SUM((m.salePrice - m.product.supplierPrice) * m.quantity)
+        )
+        FROM StockMovement m
+        WHERE m.movementType = 'OUT'
+        GROUP BY m.product.id, m.product.description
+    """)
+    Page<ProductProfitDTO> findProductProfitReport(Pageable pageable);
+
 }

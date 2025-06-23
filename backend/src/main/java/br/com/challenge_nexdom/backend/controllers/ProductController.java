@@ -1,8 +1,9 @@
 package br.com.challenge_nexdom.backend.controllers;
 
 import br.com.challenge_nexdom.backend.core.models.product.ProductType;
-import br.com.challenge_nexdom.backend.dto.ProductDTO;
-import br.com.challenge_nexdom.backend.dto.ProductResponse;
+import br.com.challenge_nexdom.backend.dto.product.ProductDTO;
+import br.com.challenge_nexdom.backend.dto.product.ProductFilterRequest;
+import br.com.challenge_nexdom.backend.dto.product.ProductRequest;
 import br.com.challenge_nexdom.backend.services.ProductService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -26,9 +27,21 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> getProducts(
             @RequestParam(defaultValue = "0") @Min(value = 0, message = "A página não pode ser negativa.") int page,
-            @RequestParam(defaultValue = "10") @Positive(message = "O tamanho deve ser maior que zero.") int size
+            @RequestParam(defaultValue = "10") @Positive(message = "O tamanho deve ser maior que zero.") int size,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) ProductType productType,
+            @RequestParam(required = false) Integer stockQuantity
     ) {
-        var products = productService.getProducts(page, size);
+
+        ProductFilterRequest filter = ProductFilterRequest.builder()
+            .page(page)
+            .size(size)
+            .description(description)
+            .productType(productType)
+            .stockQuantity(stockQuantity)
+            .build();
+
+        var products = productService.getProducts(filter);
         return ResponseEntity.ok(products);
     }
 
@@ -42,18 +55,18 @@ public class ProductController {
 
     @PostMapping("/new")
     public ResponseEntity<ProductDTO> newProduct(
-            @Valid @RequestBody ProductResponse response
+            @Valid @RequestBody ProductRequest request
     ) {
-        var product = productService.createProduct(response);
+        var product = productService.createProduct(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<ProductDTO> editProduct(
             @PathVariable("id") @Positive(message = "O ID deve ser maior que zero.") Long id,
-            @Valid @RequestBody ProductResponse response
+            @Valid @RequestBody ProductRequest request
     ) {
-        var product = productService.updateProduct(id, response);
+        var product = productService.updateProduct(id, request);
         return ResponseEntity.ok(product);
     }
 

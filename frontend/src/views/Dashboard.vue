@@ -84,7 +84,7 @@
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(movement, index) in recentMovements" :key="index">
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ formatarData(movement.movementDate) }}
+                {{ formatDate(movement.movementDate) }}
               </td>
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
@@ -106,6 +106,20 @@
                 {{ movement.quantity }}
               </td>
             </tr>
+
+            <tr v-if="recentMovements.length === 0">
+              <td colspan="8" class="px-6 py-12 text-center">
+                <div
+                  class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500"
+                >
+                  <i class="fas fa-box-open text-4xl mb-3"></i>
+                  <p class="text-lg font-medium">
+                    Nenhuma movimentação encontrada
+                  </p>
+                  <p class="text-sm">Tente ajustar os filtros de busca</p>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -116,7 +130,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { Chart, registerables } from "chart.js";
-import { formatarData } from "../utils/utils.js";
+import { formatDate } from "../utils/utils.js";
 import {
   loadMovementsRecent,
   loadMovementsChart,
