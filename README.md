@@ -1,6 +1,6 @@
 # Desafio FullStack: Controle de Estoque
 
-Este projeto é uma solução para o desafio FullStack proposto pela Nexdom, que consiste em construir uma aplicação RESTful para controle de estoque, com funcionalidades de cadastro de produtos, movimentação de estoque (entrada/saída), consultas e cálculo de lucro por produto.
+Este projeto é uma solução para o desafio FullStack proposto pela Nexdom, que consiste em construir uma aplicação RESTful para controle de estoque, com funcionalidades de cadastro de produtos, movimentação de estoque (entrada/saída), consultas e cálculo de lucro por produto. Resolvi esse desafio como prática de estudo.
 
 ## Tecnologias Utilizadas
 
